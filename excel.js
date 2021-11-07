@@ -8,7 +8,7 @@ let data = [{
     "name": "jayanth",
     "data": "scd",
     "abc": "sdef"
-}]
+}];
 
 
 document.getElementById('button').addEventListener("click", () => {
@@ -19,12 +19,12 @@ document.getElementById('button').addEventListener("click", () => {
         fileReader.onload = (event) => {
             let data = event.target.result;
             let workbook = XLSX.read(data, { type: "binary" });
-            console.log(workbook);
+            //console.log(workbook);
             json_obj = {};
             workbook.SheetNames.forEach(sheet => {
                 json_obj = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
                 json_exam = BuildingJSON(json_obj);
-                console.log(json_exam);
+                //console.log(json_exam);
                 //console.log(rowObject);
                 //document.getElementById("jsondata").innerHTML = JSON.stringify(rowObject,undefined,4)
             });
@@ -46,7 +46,7 @@ function BuildingJSON(values) {
     var question = {};
 
     // Setting banks:
-    for (i = 1; i < values.length; i++) {
+    for (i = 0; i < values.length; i++) {
         if (Object.values(values[i])[2].length > 0) {
 
             bank_id = "bank_" + values[i].bank_id;
@@ -56,7 +56,7 @@ function BuildingJSON(values) {
     }
 
     // Setting subjects:
-    for (i = 1; i < values.length; i++) {
+    for (i = 0; i < values.length; i++) {
         if (Object.values(values[i])[2].length > 0) {
 
             bank_id = "bank_" + values[i].bank_id;
@@ -70,7 +70,7 @@ function BuildingJSON(values) {
     }
 
     // Setting questions:
-    for (i = 1; i < values.length; i++) {
+    for (i = 0; i < values.length; i++) {
         if (Object.values(values[i])[2].length > 0) {
 
             bank_id = "bank_" + values[i].bank_id;
@@ -85,31 +85,32 @@ function BuildingJSON(values) {
     }
 
     // Setting details of questions subjects:
-    for (i = 1; i < values.length; i++) {
-        RecordIsNotEmpty = Object.values(values[i])[2].length > 0;
-        if (RecordIsNotEmpty) {
+    for (i = 0; i < values.length; i++) {
+        //RecordIsNotEmpty = Object.values(values[i].subject_id).length > 0;
+        //  if (RecordIsNotEmpty) {
 
-            bank_id = "bank_" + values[i].bank_id;
-            subject_id = "subject_" + values[i].subject_id;
-            question_id = "question_option_" + values[i].question_id;
-            subject_body = values[i].subject_body;
-            subject[subject_id] = {};
-            question.question_body = values[i].question_body;
-            question.true_answer = values[i].true_answer;
-            question.fail_answer1 = values[i].fail_answer1;
-            question.fail_answer2 = values[i].fail_answer2;
-            question.fail_answer3 = values[i].fail_answer3;
-            question.question_title = values[i].question_title;
-            question.chapter_body = values[i].chapter_body;
+        bank_id = "bank_" + values[i].bank_id;
+        subject_id = "subject_" + values[i].subject_id;
+        question_id = "question_option_" + values[i].question_id;
+        //console.log(question_id);
+        subject_body = values[i].subject_body;
+        subject[subject_id] = {};
+        question.question_body = values[i].question_body;
+        question.true_answer = values[i].true_answer;
+        question.fail_answer1 = values[i].fail_answer1;
+        question.fail_answer2 = values[i].fail_answer2;
+        question.fail_answer3 = values[i].fail_answer3;
+        question.question_title = values[i].question_title;
+        question.chapter_body = values[i].chapter_body;
 
-            question.acronym = values[i][11];
-            //Logger.log(question.acronym);
-            data[bank_id][subject_id]["subject_body"] = subject_body;
-            data[bank_id][subject_id][question_id] = question;
+        question.acronym = values[i].acronym;
+        //Logger.log(question.acronym);
+        data[bank_id][subject_id]["subject_body"] = subject_body;
+        data[bank_id][subject_id][question_id] = question;
 
-            question = {};
+        question = {};
 
-        }
+        //       }
     }
 
 
