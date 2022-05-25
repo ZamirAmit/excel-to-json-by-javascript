@@ -24,9 +24,21 @@ document.getElementById('button').addEventListener("click", () => {
             workbook.SheetNames.forEach(sheet => {
                 json_obj = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
                 json_exam = BuildingJSON(json_obj);
-                //console.log(json_exam);
-                //console.log(rowObject);
-                //document.getElementById("jsondata").innerHTML = JSON.stringify(rowObject,undefined,4)
+
+                // Sending and receiving data in JSON format using POST method
+                //
+                var xhr = new XMLHttpRequest();
+                var url = "https://storyline-quiz-maker.42web.io/storyline-quiz-maker/index.php";
+                xhr.open("POST", url, true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        var json = JSON.parse(xhr.responseText);
+                        console.log(json);
+                    }
+                };
+                var data = JSON.stringify(json_exam);
+                xhr.send(data);
             });
 
         }
